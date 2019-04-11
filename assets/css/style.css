@@ -1,0 +1,68 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    width: 1280px;
+    height: 853px;
+    background-image: url("..//images/apple-background-connection-399161\ \(3\).jpg");
+    border: solid grey 0.25px;
+    text-align: center;
+    border-radius: 15px;
+  }
+
+  .btn {
+    color: grey;
+    background-color: lavender;
+    width: 400px;
+    font-size: 40px;
+    height: 100px;
+  }
+
+  h1 {
+      padding: 50px;
+      color: grey;
+  }
+
+  .question {
+      padding: 20px;
+      font-size: 22px;
+      background: lavender;
+      border-radius: 20px;
+      margin: 10px 0 10px 0; 
+      color: grey;
+  }
+
+  .option {
+      width: 470px;
+      display: inline-block; 
+      padding: 10px 0 10px 15px;
+      vertical-align: middle; 
+      background: rgba(255, 255, 255, 0.5);
+      margin: 10px 0 10px 10px;
+      color: #000000;
+      border-radius: 20px;
+  }
+
+  .option:hover { 
+      background: pink; 
+      color: #0c0000; 
+  }
+
+  .option input:checked .option {
+      background: pink;
+      color: #000; 
+  }
+
+
+
+  #closet {
+      height: 300px;
+      width: 200px;
+      position: relative;
+      padding-bottom: 50px;
+  }
+  #win {
+      background-color: lavender;
+      border-radius: 15px;
+  }
