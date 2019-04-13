@@ -45,6 +45,7 @@ var currentQuestion= 0;
 var answers = ["$159", "82lbs", "As many as they want!", "As long as they want", "5"];
 var score = 0;
 var totalQuestions= questions.length; 
+var timer;
 
 var container = document.getElementById("quizContainer");
 var questionEl = document.getElementById('question');
@@ -55,7 +56,6 @@ var opt4 = document.getElementById("opt4");
 var resultCont = document.getElementById("result");
 
 // Timer
-
 var total_seconds=60*0.34;
 // var c_minutes=parseInt(total_seconds/60);
 var c_seconds=parseInt(total_seconds%60);
@@ -70,7 +70,7 @@ function checkTime (){
         total_seconds =total_seconds -1;
         c_minutes =parseInt(total_seconds/60);
         c_seconds= parseInt(total_seconds%60);
-        setTimeout("checkTime()", 1000);
+        // setTimeout(checkTime, 1000);
     }
     if (c_seconds ===0){
         $("#quizContainer").empty();
@@ -78,16 +78,15 @@ function checkTime (){
     }
 } 
 
-//stop time
-function freeze(){
-clearTimeout(c_seconds);
+function startTimer(){
+    timer = setInterval(checkTime, 1000);
 }
 
 // On Click Event 
 
 $(".btn").click(function(){
     $(".btn").hide();
-    setTimeout("checkTime()", 1000);
+    startTimer();
     loadQuestion(currentQuestion);
     document.getElementById("quizContainer").style.display="block";
 });
@@ -97,14 +96,15 @@ $(".option").click(function(){
     var selectedOption =document.querySelector('input[type=radio]:checked');
     var answer = selectedOption.value;
     if (questions[currentQuestion].answer == answer) {
-        $("#quizContainer").empty();
-        $("#quizContainer").html("<div id=win><h1>Correct Answer</h1><br><img id='closet' src='assets/images/rtr-unlimited.jpg'></div>");
-        freeze();
+        $("#quizContainer").hide();
+        $("#quiz-time-left").html("<div id='win'><h1>Correct Answer</h1><br><img id='closet' src='assets/images/rtr-unlimited.jpg'></div>");
+        setTimeout(loadNextQuestion, 2000);
     }
     else {
-        $("#quizContainer").empty();
-        $("#quizContainer").html("<div id=win><h1>Incorrect Answer</h1><br><p id='answer'></p><img id='closet' src='assets/images/empty.jpg'></div>");
+        $("#quizContainer").hide();
+        $("#quiz-time-left").html("<div id='win'><h1>Incorrect Answer</h1><br><p id='answer'></p><img id='closet' src='assets/images/empty.jpg'></div>");
         $("#answer").append("The Correct answer is   " + answers[currentQuestion])
+        setTimeout(loadNextQuestion, 2000);
     }
 });
 
@@ -118,23 +118,31 @@ function loadQuestion(questionIndex) {
 }
 
 function loadNextQuestion (){
-    var selectedOption =document.querySelector('input[type=radio]:checked');
-    var answer = selectedOption.value;
-    if (questions[currentQuestion].answer == answer) {
-        $("#quizContainer").empty();
-        $("#quizContainer").html("<div id=win><h1>Correct Answer</h1><br><img src='././images/rtr-unlimited.jpg'></div>");
-    }
-    selectedOption.checked= false;
-    currentQuestion++;
-    if(currentQuestion == totalQuestions-1){
-        setTimeout.textContent= 'Finish';
-    }
-    if(currentQuestion == totalQuestions){
-        containerQ.style.display = 'none';
-        resultCont.style.diplay  = '';
-        resultCont.textContent = 'Your Score:' +score;
+    //clearInterval on timer
+    clearInterval(timer);
+    //Set timer back to 20 seconds
+    total_seconds = 60* 0.34;
+    startTimer();
+    document.getElementById("quizContainer").style.display="block";
+    var selectedOption=document.querySelector('input[type=radio]:checked');
+    if (!selectedOption){
+        console.log("please select answer");
         return;
+    }
+    var answer =selectedOption.value;
+    if (questions[currentQuestion].answer==answer) {
+        score +=1;
+    }
+    selectedOption.checked =false;
+    currentQuestion++;
+    if(currentQuestion==totalQuestions){
+        container.style.display = "none";
+        resultCont.style.diplay= "";
+        resultCont.textContent ="Your Score" +score;
     }
     loadQuestion(currentQuestion);
 }
 
+// end timer function 
+
+//display score
